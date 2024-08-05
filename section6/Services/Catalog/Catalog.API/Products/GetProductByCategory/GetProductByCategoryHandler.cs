@@ -13,7 +13,7 @@ internal class GetProductByCategoryQueryHandler
         logger.LogInformation("GetProductByCategoryQueryHandler.Handle called with {@Query}", query);
 
         var products = await session.Query<Product>()
-            .Where(p => p.Category.Contains(query.Category))
+            .Where(p => p.Category != null && p.Category.Any(c => c.Contains(query.Category)))
             .ToListAsync(cancellationToken);
 
         return new GetProductByCategoryResult(products);
